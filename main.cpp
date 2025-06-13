@@ -3,7 +3,7 @@
 
 int main()
 {
-    //setlocale(LC_ALL,"");
+    // setlocale(LC_ALL,"");
 
     char nome_arquivo[MAX];
     int opcao_menu;
@@ -11,18 +11,22 @@ int main()
     printf("Digite o nome do arquivo para ser lido: ");
     scanf(" %[^\n]", nome_arquivo);
 
+    limpar_buffer_stdin();
+
     leitura_aquivo(nome_arquivo);
 
     do
     {
         menu();
         scanf("%d", &opcao_menu);
-        if(opcao_menu < 1){
+        if (opcao_menu < 1)
+        {
             printf("Entrada invalida. Porfavor digite novamente.\n");
             opcao_menu = 0;
             continue;
         }
 
+        limpar_buffer_stdin();
         switch (opcao_menu)
         {
         case 1:

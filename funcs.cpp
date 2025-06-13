@@ -109,23 +109,33 @@ void CadastrarVenda()
 {
     printf("\n---- Cadastro de Vendas ----\n");
 
-    char cpf_Cliente[TAM_CPF];
-    printf("Informe o seu CPF(sem ponto e sem traço): ");
-    scanf(" %[^\n]", cpf_Cliente);
-    if (strlen(cpf_Cliente) == 0)
-    {
-        printf("Erro na Leitura do CPF, Porfavor Digitar novamente.");
-        scanf(" %[^\n]", cpf_Cliente);
-    }
-
     Vendas Nova_venda;
     Nova_venda.primeiro_item = NULL;
     Nova_venda.total_venda = 0.0;
-    Data_HoraAtual(&Nova_venda.data,&Nova_venda.horaVenda);
+    Data_HoraAtual(&Nova_venda.data, &Nova_venda.horaVenda);
     char continuar = 's';
     int cod_produto;
     int qtd_desejada;
     Produtos *produtosEscolhidos;
+
+    printf("Informe o seu CPF(sem ponto e sem traço): ");
+    if (fgets(Nova_venda.cpf_cliente, TAM_CPF, stdin) == NULL)
+    {
+        printf("Por favor, Digite o CPF novamente: ");
+        if (fgets(Nova_venda.cpf_cliente, TAM_CPF, stdin) == NULL)
+        {
+            printf("Erro ao ler CPF. Operação Cancelada.\n");
+            return;
+        }
+    }
+
+    Nova_venda.cpf_cliente[strcspn(Nova_venda.cpf_cliente, "\n")] = '\0';
+
+    if (strlen(Nova_venda.cpf_cliente) == 0)
+    {
+        printf("CPF não informado. Operação cancelada. \n");
+        return;
+    }
 
     while (continuar == 's' || continuar == 'S')
     {
@@ -143,9 +153,8 @@ void CadastrarVenda()
 
         printf("Digite o codigo do produto desejado: ");
         scanf("%d", &cod_produto);
-    
-        produtosEscolhidos = Busca_Produto_por_Cod(cod_produto);
 
+        produtosEscolhidos = Busca_Produto_por_Cod(cod_produto);
 
         if (produtosEscolhidos == NULL)
         {
@@ -195,7 +204,6 @@ void CadastrarVenda()
         printf("Deseja continuar adicionando produtos? (s/n): ");
         scanf(" %c", &continuar);
     }
-   
 
     if (Nova_venda.primeiro_item != NULL)
     {
@@ -238,15 +246,17 @@ void CadastrarVenda()
     printf("=======================================\n");
 }
 
-void listarVendasPorData(){
+void listarVendasPorData()
+{
 
-    int dia,mes,ano;
+    int dia, mes, ano;
     int data_busca;
     int vendas_encontradas = 0;
 
     printf("\n ---- Listar vendas por Data ----\n");
 
-    if(num_vendas_realizadas == 0){
+    if (num_vendas_realizadas == 0)
+    {
         printf("Nenhuma venda foi realizada. \n");
         printf("---------------------------\n");
         return;
@@ -254,35 +264,40 @@ void listarVendasPorData(){
 
     printf("Digite a data que deseja buscar(aaaa/mm/dd): ");
 
-    if(scanf("%d/%d/%d",&ano,&mes,&dia) != 3){
+    if (scanf("%d/%d/%d", &ano, &mes, &dia) != 3)
+    {
         printf("Formato de data invalido , Use o formato (aaaa/mm/dd) \n");
         return;
     }
 
-    data_busca = ano*10000 + mes * 100 + dia;
-    printf("\n ---- Vendas realizada em %04d/%02d/%02d ---- \n",ano,mes,dia);
-    
-    for(int i = 0; i < num_vendas_realizadas;i++){
+    data_busca = ano * 10000 + mes * 100 + dia;
+    printf("\n ---- Vendas realizada em %04d/%02d/%02d ---- \n", ano, mes, dia);
 
-        if(lista_vendas[i].data == data_busca){
+    for (int i = 0; i < num_vendas_realizadas; i++)
+    {
+
+        if (lista_vendas[i].data == data_busca)
+        {
             printf("Hora: %02d:%02d:%02d | CPF:%s | Valor Total: R$%.2f\n",
-                lista_vendas[i].horaVenda.hora,
-                lista_vendas[i].horaVenda.minuto,
-                lista_vendas[i].horaVenda.segundo,
-                lista_vendas[i].cpf_cliente,
-                lista_vendas[i].total_venda);
+                   lista_vendas[i].horaVenda.hora,
+                   lista_vendas[i].horaVenda.minuto,
+                   lista_vendas[i].horaVenda.segundo,
+                   lista_vendas[i].cpf_cliente,
+                   lista_vendas[i].total_venda);
             vendas_encontradas++;
         }
     }
 
-    if(vendas_encontradas == 0){
+    if (vendas_encontradas == 0)
+    {
         printf("Nenhuma venda encontrada para a data informada. \n");
     }
     printf("--------------------------------\n");
+}
 
-
-
-
-    
-
+void limpar_buffer_stdin()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+        ;
 }

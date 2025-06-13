@@ -48,3 +48,4 @@ void adicionaItem(Vendas *vendas, int codproduto, float preco, int qtd);
 void Data_HoraAtual(int* data, Horario_Venda*horario);
 void CadastrarVenda();
 void listarVendasPorData();
+void limpar_buffer_stdin();
