@@ -49,3 +49,4 @@ void Data_HoraAtual(int* data, Horario_Venda*horario);
 void CadastrarVenda();
 void listarVendasPorData();
 void limpar_buffer_stdin();
+void AlterarPrecoEstoque();

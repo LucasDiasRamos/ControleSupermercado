@@ -301,3 +301,58 @@ void limpar_buffer_stdin()
     while ((c = getchar()) != '\n' && c != EOF)
         ;
 }
+
+void AlterarPrecoEstoque()
+{
+
+    printf("\n ---- Alterar Estoque e Preco de Produtos ---- \n");
+
+    int cod_busca;
+    Produtos *produto_encontrado;
+    float novo_preco;
+    int qtd_adicionar;
+
+    printf("Digite p codigo do produto que deseja alterar: ");
+    scanf("%d", &cod_busca);
+   
+    produto_encontrado = Busca_Produto_por_Cod(cod_busca);
+
+    if (produto_encontrado == NULL)
+    {
+        printf("ERRO: Código: %d nao foi encontrado.\n", cod_busca);
+    }
+    else
+    {
+        printf("\nProduto Encontrado\n");
+        printf("- Nome: %s\n", produto_encontrado->nome);
+        printf("- Preco atual: R$%.2f\n", produto_encontrado->preco);
+        printf("Estoque atual: %d unidades\n\n",produto_encontrado->qtd_estoque);
+
+        printf("Digite o novo preco do produto: ");
+       
+        if (scanf("%f", &novo_preco) != 1 || novo_preco < 0)
+        {
+            printf("Preco invalido. Operacao cancelada\n");
+            limpar_buffer_stdin();
+            return;
+        }
+        limpar_buffer_stdin();
+
+        printf("Digite a quantidade a ser adicionada ao estoque: ");
+        if (scanf("%d", &qtd_adicionar) != 1 || qtd_adicionar < 0)
+        {
+            printf("Quantidade invalida. Operacao cancelada.\n");
+            limpar_buffer_stdin();
+            return;
+        }
+        limpar_buffer_stdin();
+
+        produto_encontrado->preco = novo_preco;
+        produto_encontrado->qtd_estoque += qtd_adicionar;
+
+        printf("\nProduto atualizado com sucesso\n");
+        printf("Novo Preco R$%.2f\n", produto_encontrado->preco);
+        printf("Nova Quantidade Estoque: %d unidade\n", produto_encontrado->qtd_estoque);
+    }
+    printf("----------------------------------------------------\n");
+}

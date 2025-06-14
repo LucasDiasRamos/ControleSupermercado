@@ -37,7 +37,7 @@ int main()
             break;
 
         case 3:
-            printf("Alterar estoque - Não implementado");
+            AlterarPrecoEstoque();
             break;
         case 4:
             printf("Remover - Não implementado");
