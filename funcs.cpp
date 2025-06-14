@@ -98,8 +98,6 @@ void Data_HoraAtual(int *data, Horario_Venda *horario)
 
     *data = (tm_local.tm_year + 1900) * 10000 + (tm_local.tm_mon + 1) * 100 + tm_local.tm_mday;
 
-    printf("[DEBUG] Data convertida para inteiro: %d\n\n", *data);
-
     horario->hora = tm_local.tm_hour;
     horario->minuto = tm_local.tm_min;
     horario->segundo = tm_local.tm_sec;
@@ -442,4 +440,101 @@ void RemoveProduto()
     }
 
     printf("-----------------------------------\n");
+}
+
+void SalvarProdutos(char *nome_arquivo)
+{
+    FILE *arquivo = fopen(nome_arquivo, "w");
+    if (arquivo == NULL)
+    {
+        printf("Erro: Nao foi possivel abrir o arquivo '%s' para salvar as alterações\n", nome_arquivo);
+        return;
+    }
+
+    fprintf(arquivo, "%d\n", qtd_produtos);
+    for (int i = 0; i < qtd_produtos; i++)
+    {
+        fprintf(arquivo, "%d\n", produtos[i].cod_produto);
+        fprintf(arquivo, "%s\n", produtos[i].nome);
+        fprintf(arquivo, "%.2f\n", produtos[i].preco);
+        fprintf(arquivo, "%d\n", produtos[i].qtd_estoque);
+    }
+    fclose(arquivo);
+    printf("Arquivo de produtos foi atualizado com sucesso\n");
+}
+
+void SalvarRelatorioDeVendas()
+{
+    char nome_arquivo_vendas[MAX];
+    time_t t = time(NULL);
+    tm tm_local = *localtime(&t);
+    Item_Vendido *item_atual;
+    Produtos *info_prod;
+    const char *nome_prod;
+    float subtotal;
+
+    if (num_vendas_realizadas == 0)
+    {
+        printf("Nenhuma venda foi realizada. Relatorio não foi gerado\n");
+        return;
+    }
+
+    sprintf(nome_arquivo_vendas, "vendas%02d%02d%d.txt",
+            tm_local.tm_mday, tm_local.tm_mon + 1, tm_local.tm_year + 1900);
+
+    FILE *arquivo = fopen(nome_arquivo_vendas, "w");
+    if (arquivo == NULL)
+    {
+        printf("Erro: Nao foi possivel criar o arquivo de relatorio de vendas\n");
+        return;
+    }
+
+    for (int i = 0; i < num_vendas_realizadas; i++)
+    {
+        int data_int = lista_vendas[i].data;
+        int ano = data_int / 10000;
+        int mes = (data_int / 100) % 100;
+        int dia = data_int % 100;
+
+        fprintf(arquivo, "%02d/%02d/%02d\n", dia, mes, ano);
+        fprintf(arquivo, "%02d:%02d:%02d\n", lista_vendas[i].horaVenda.hora, lista_vendas[i].horaVenda.minuto, lista_vendas[i].horaVenda.segundo);
+        fprintf(arquivo, "%s\n", lista_vendas[i].cpf_cliente);
+
+        item_atual = lista_vendas[i].primeiro_item;
+        while (item_atual != NULL)
+        {
+            info_prod = Busca_Produto_por_Cod(item_atual->cod_produto);
+            if (info_prod != NULL)
+            {
+                nome_prod = info_prod->nome;
+            }
+            else
+            {
+                nome_prod = "Produto-Desc";
+            }
+
+            subtotal = item_atual->preco_venda * item_atual->qtd_Vendida;
+
+            fprintf(arquivo, "%d %s %d %.2f\n",
+                    item_atual->cod_produto, nome_prod, item_atual->qtd_Vendida, subtotal);
+            item_atual = item_atual->prox;
+        }
+
+        fprintf(arquivo, "%.2f\n", lista_vendas[i].total_venda);
+
+        if (i < num_vendas_realizadas - 1)
+        {
+            fprintf(arquivo, "\n");
+        }
+    }
+    fclose(arquivo);
+    printf("Relatorio de vendas gerado com sucesso\n");
+}
+
+void SairDoPrograma(char *nome_arquivo)
+{
+    printf("\nSalvando todos os dados antes do fechamento do Sistema...\n");
+    SalvarProdutos(nome_arquivo);
+    SalvarRelatorioDeVendas();
+    printf("Programa Finalizado\n");
 }

@@ -7,6 +7,7 @@ int main()
 
     char nome_arquivo[MAX];
     int opcao_menu;
+    
 
     printf("Digite o nome do arquivo para ser lido: ");
     scanf(" %[^\n]", nome_arquivo);
@@ -43,7 +44,7 @@ int main()
             RemoveProduto();
             break;
         case 5:
-            printf("Saindo");
+            SairDoPrograma(nome_arquivo);
             break;
 
         default:

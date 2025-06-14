@@ -50,3 +50,5 @@ void ListarVendasPorData();
 void limpar_buffer_stdin();
 void AlterarPrecoEstoque();
 void RemoveProduto();
+void SalvarProdutos(char *nome_arquivo);
+void SairDoPrograma(char *nome_arquivo);
