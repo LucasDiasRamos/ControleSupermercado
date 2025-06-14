@@ -39,14 +39,14 @@ struct Vendas
     float total_venda;
 };
 
+Produtos *Busca_Produto_por_Cod(int cod);
 
-Produtos* Busca_Produto_por_Cod(int cod);
-
-void leitura_aquivo(char *nome_arquvivo);
-void menu();
-void adicionaItem(Vendas *vendas, int codproduto, float preco, int qtd);
-void Data_HoraAtual(int* data, Horario_Venda*horario);
+void Leitura_aquivo(char *nome_arquvivo);
+void Menu();
+void AdicionaItem(Vendas *vendas, int codproduto, float preco, int qtd);
+void Data_HoraAtual(int *data, Horario_Venda *horario);
 void CadastrarVenda();
-void listarVendasPorData();
+void ListarVendasPorData();
 void limpar_buffer_stdin();
 void AlterarPrecoEstoque();
+void RemoveProduto();

@@ -13,11 +13,11 @@ int main()
 
     limpar_buffer_stdin();
 
-    leitura_aquivo(nome_arquivo);
+    Leitura_aquivo(nome_arquivo);
 
     do
     {
-        menu();
+        Menu();
         scanf("%d", &opcao_menu);
         if (opcao_menu < 1)
         {
@@ -33,14 +33,14 @@ int main()
             CadastrarVenda();
             break;
         case 2:
-            listarVendasPorData();
+            ListarVendasPorData();
             break;
 
         case 3:
             AlterarPrecoEstoque();
             break;
         case 4:
-            printf("Remover - Não implementado");
+            RemoveProduto();
             break;
         case 5:
             printf("Saindo");

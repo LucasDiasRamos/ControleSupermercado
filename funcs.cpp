@@ -7,7 +7,7 @@ int qtd_produtos = 0;
 Produtos produtos[MAX];
 Vendas lista_vendas[MAX];
 
-void leitura_aquivo(char *nome_arquvivo)
+void Leitura_aquivo(char *nome_arquvivo)
 {
     FILE *arquivo;
 
@@ -37,18 +37,18 @@ void leitura_aquivo(char *nome_arquvivo)
     printf("Arquivo lido com sucesso\n");
 }
 
-void menu()
+void Menu()
 {
     printf("Menu principal \n");
     printf("[1] Cadastrar Venda\n");
     printf("[2] Listar vendas por data\n");
-    printf("[3] Alterar estoque e preço de produto - Não implementado\n");
-    printf("[4] Remover produto do estoque - Não implementado\n");
+    printf("[3] Alterar estoque e preco de produto\n");
+    printf("[4] Remover produto do estoque\n");
     printf("[5] Sair\n");
-    printf("Digite uma Opção: ");
+    printf("Digite uma Opcao: ");
 }
 
-void adicionaItem(Vendas *vendas, int codproduto, float preco, int qtd)
+void AdicionaItem(Vendas *vendas, int codproduto, float preco, int qtd)
 {
     Item_Vendido *novoItem = (Item_Vendido *)malloc(sizeof(Item_Vendido));
 
@@ -197,7 +197,7 @@ void CadastrarVenda()
                 }
             }
 
-            adicionaItem(&Nova_venda, produtosEscolhidos->cod_produto, produtosEscolhidos->preco, qtd_desejada);
+            AdicionaItem(&Nova_venda, produtosEscolhidos->cod_produto, produtosEscolhidos->preco, qtd_desejada);
             produtosEscolhidos->qtd_estoque -= qtd_desejada; // atualiza o estoque
             printf("Item %s %d adicionado ao carrinho.\n", produtosEscolhidos->nome, qtd_desejada);
         }
@@ -246,7 +246,7 @@ void CadastrarVenda()
     printf("=======================================\n");
 }
 
-void listarVendasPorData()
+void ListarVendasPorData()
 {
 
     int dia, mes, ano;
@@ -314,7 +314,7 @@ void AlterarPrecoEstoque()
 
     printf("Digite p codigo do produto que deseja alterar: ");
     scanf("%d", &cod_busca);
-   
+
     produto_encontrado = Busca_Produto_por_Cod(cod_busca);
 
     if (produto_encontrado == NULL)
@@ -326,10 +326,10 @@ void AlterarPrecoEstoque()
         printf("\nProduto Encontrado\n");
         printf("- Nome: %s\n", produto_encontrado->nome);
         printf("- Preco atual: R$%.2f\n", produto_encontrado->preco);
-        printf("Estoque atual: %d unidades\n\n",produto_encontrado->qtd_estoque);
+        printf("Estoque atual: %d unidades\n\n", produto_encontrado->qtd_estoque);
 
         printf("Digite o novo preco do produto: ");
-       
+
         if (scanf("%f", &novo_preco) != 1 || novo_preco < 0)
         {
             printf("Preco invalido. Operacao cancelada\n");
@@ -355,4 +355,91 @@ void AlterarPrecoEstoque()
         printf("Nova Quantidade Estoque: %d unidade\n", produto_encontrado->qtd_estoque);
     }
     printf("----------------------------------------------------\n");
+}
+
+void RemoveProduto()
+{
+
+    printf("\n ---- Remover Produto do Estoque ----\n");
+
+    int cod_busca;
+    int indice_produto = -1; // usando -1 pra vacilitar a remoção
+    int produto_vendido = 0;
+    char escolha;
+
+    printf("Digite o codigo do produto que deseja remover: ");
+    if (scanf("%d", &cod_busca) != 1)
+    {
+        printf("Codigo invalido\n");
+        limpar_buffer_stdin();
+        return;
+    }
+
+    limpar_buffer_stdin();
+
+    // Faz a busca do produto em produtos
+    for (int i = 0; i < qtd_produtos; i++)
+    {
+        if (produtos[i].cod_produto == cod_busca)
+        {
+            indice_produto = i;
+            break;
+        }
+    }
+
+    if (indice_produto == -1)
+    {
+        printf("Erro: Produto com o codigo %d nao encontrado.\n", cod_busca);
+        printf("---------------------------\n");
+        return;
+    }
+
+    printf("Produto encontrado: %s\n", produtos[indice_produto].nome);
+
+    // Faz a validação de o produto foi vendido alguma vez
+    for (int i = 0; i < num_vendas_realizadas; i++)
+    {
+        Item_Vendido *item_atual = lista_vendas[i].primeiro_item;
+        while (item_atual != NULL)
+        {
+            if (item_atual->cod_produto == cod_busca)
+            {
+                produto_vendido = 1;
+                break;
+            }
+            item_atual = item_atual->prox;
+        }
+        if (produto_vendido)
+        {
+            break;
+        }
+    }
+
+    if (produto_vendido)
+    {
+        printf("Erro: O produto '%s' nao pode ser removido pois ja foi utilizado em uma venda \n", produtos[indice_produto].nome);
+    }
+    else
+    {
+        printf("Deseja realmente remover '%s' do estoque (s/n): ", produtos[indice_produto].nome);
+        scanf(" %c", &escolha);
+        limpar_buffer_stdin();
+
+        if (escolha == 's' || escolha == 'S')
+        {
+            for (int i = indice_produto; i < qtd_produtos - 1; i++)
+            {
+                produtos[i] = produtos[i + 1];
+            }
+            qtd_produtos--;
+
+            printf("Produto removido\n");
+        }
+        else
+        {
+            printf("Operacao cancelada\n");
+        }
+    }
+
+    printf("-----------------------------------\n");
 }
