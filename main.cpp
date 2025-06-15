@@ -1,13 +1,17 @@
+/******************************************
+  Lucas Mateus Dias Ramos
+  Trabalho Alg.Prog. 2 Produtos
+  Professor(a): Graziela
+
+*******************************************/
 #include "funcs.h"
 #include <locale.h>
 
 int main()
 {
-    // setlocale(LC_ALL,"");
 
     char nome_arquivo[MAX];
     int opcao_menu;
-    
 
     printf("Digite o nome do arquivo para ser lido: ");
     scanf(" %[^\n]", nome_arquivo);
@@ -48,7 +52,7 @@ int main()
             break;
 
         default:
-            printf("Opção invalida. Digite novamente\n");
+            printf("Opcao invalida. Digite novamente\n");
             break;
         }
     } while (opcao_menu != 5);

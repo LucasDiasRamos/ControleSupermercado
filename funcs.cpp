@@ -15,7 +15,7 @@ void Leitura_aquivo(char *nome_arquvivo)
 
     if (arquivo == NULL)
     {
-        printf("Erro nome do arquivo não digitado.\n");
+        printf("Erro nome do arquivo nao digitado.\n");
     }
     else
     {
@@ -116,13 +116,13 @@ void CadastrarVenda()
     int qtd_desejada;
     Produtos *produtosEscolhidos;
 
-    printf("Informe o seu CPF(sem ponto e sem traço): ");
+    printf("Informe o seu CPF(sem ponto e sem traco): ");
     if (fgets(Nova_venda.cpf_cliente, TAM_CPF, stdin) == NULL)
     {
         printf("Por favor, Digite o CPF novamente: ");
         if (fgets(Nova_venda.cpf_cliente, TAM_CPF, stdin) == NULL)
         {
-            printf("Erro ao ler CPF. Operação Cancelada.\n");
+            printf("Erro ao ler CPF. Operacao Cancelada.\n");
             return;
         }
     }
@@ -131,7 +131,7 @@ void CadastrarVenda()
 
     if (strlen(Nova_venda.cpf_cliente) == 0)
     {
-        printf("CPF não informado. Operação cancelada. \n");
+        printf("CPF nao informado. Operacao cancelada. \n");
         return;
     }
 
@@ -310,14 +310,14 @@ void AlterarPrecoEstoque()
     float novo_preco;
     int qtd_adicionar;
 
-    printf("Digite p codigo do produto que deseja alterar: ");
+    printf("Digite o codigo do produto que deseja alterar: ");
     scanf("%d", &cod_busca);
 
     produto_encontrado = Busca_Produto_por_Cod(cod_busca);
 
     if (produto_encontrado == NULL)
     {
-        printf("ERRO: Código: %d nao foi encontrado.\n", cod_busca);
+        printf("ERRO: Codigo: %d nao foi encontrado.\n", cod_busca);
     }
     else
     {
@@ -447,7 +447,7 @@ void SalvarProdutos(char *nome_arquivo)
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL)
     {
-        printf("Erro: Nao foi possivel abrir o arquivo '%s' para salvar as alterações\n", nome_arquivo);
+        printf("Erro: Nao foi possivel abrir o arquivo '%s' para salvar as alteracoes\n", nome_arquivo);
         return;
     }
 
@@ -475,7 +475,7 @@ void SalvarRelatorioDeVendas()
 
     if (num_vendas_realizadas == 0)
     {
-        printf("Nenhuma venda foi realizada. Relatorio não foi gerado\n");
+        printf("Nenhuma venda foi realizada. Relatorio nao foi gerado\n");
         return;
     }
 
