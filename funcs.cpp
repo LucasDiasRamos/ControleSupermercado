@@ -241,7 +241,7 @@ void CadastrarVenda()
     }
     else
         printf("Nenhum Item adicionado.\n");
-    printf("=======================================\n");
+    printf("--------------------------------------\n");
 }
 
 void ListarVendasPorData()

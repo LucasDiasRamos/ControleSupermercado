@@ -1,7 +1,8 @@
 /******************************************
   Lucas Mateus Dias Ramos
   Trabalho Alg.Prog. 2 Produtos
-  Professor(a): Graziela
+  Professor(a): Graziela Santos de Araujo
+  Universidade Federal do Mato Grosso do Sul
 
 *******************************************/
 #include "funcs.h"
